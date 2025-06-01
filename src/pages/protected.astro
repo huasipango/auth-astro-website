@@ -1,4 +1,5 @@
 ---
+import { firebase } from "@/firebase/config";
 import MainLayout from "@/layouts/MainLayout.astro";
 
 const {user, isLoggedIn} = Astro.locals;
@@ -8,7 +9,11 @@ if (!isLoggedIn || !user) {
     return Astro.redirect("/login");
 }
 
-const {avatar, email, emailVerified, name} = user;
+const {avatar, email, name} = user;
+
+const firebaseUser = firebase.auth.currentUser;
+await firebaseUser?.reload();
+const {emailVerified} = firebaseUser!;
 ---
 
 <MainLayout>
